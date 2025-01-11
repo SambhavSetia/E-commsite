@@ -1,0 +1,92 @@
+*{
+    margin: 0px;
+    padding: 0%;
+}
+
+body,html{
+    height: 100%;
+    width:  100%;
+}
+
+.Navbar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    border: 2px solid gray;
+}
+.top{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    list-style: none;
+}
+
+.nav-logo{
+    display: flex;
+    align-items: center;
+   
+}
+.nav-logo p{
+    font-weight: 600;
+    font-size: 38px;
+    color: #171717;
+}
+
+li{
+    margin-left:50px;
+    color: #626262;
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+}
+/* li hr{
+    border: none;
+    width: 80%;
+    height: 3px;
+    background-color:#FF4141 ;
+} */
+.BTN button{
+    width: 134px;
+    height: 43px;
+    outline: none;
+    border: 1px solid #7a7a7a;
+    border-radius: 75px;
+font-size: 20px;
+color: #515151;}
+li:hover hr{
+    border: none;
+    width: 80%;
+    height: 3px;
+    background-color:#FF4141 ;
+
+    
+}
+.BTN button:active{
+    background-color:#f3f3f3 ;
+
+}
+
+li hr::before{
+    width: 0px;
+}
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.cart_no{
+    display: flex;
+position: relative;
+left:-124px;
+top: -20px;
+background-color: #FF4141;
+width: 15px;
+justify-content: center;
+border-radius: 3px;
+color: white;
+
+}
