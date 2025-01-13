@@ -1,92 +1,189 @@
-*{
-    margin: 0px;
-    padding: 0%;
-}
-
-body,html{
-    height: 100%;
-    width:  100%;
-}
-
-.Navbar{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    border: 2px solid gray;
-}
-.top{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    list-style: none;
+.navbar{
+  display: flex;
+  justify-content: space-around;
+  padding: 16px;
+  box-shadow: 0px lpx 3px -2px black;
+  align-items: center;
 }
 
 .nav-logo{
-    display: flex;
-    align-items: center;
-   
+  display: flex;
+align-items: center;
+gap: 10px;
 }
+
 .nav-logo p{
-    font-weight: 600;
-    font-size: 38px;
-    color: #171717;
+  color:#171717;
+  font-size: 38px;
+  font-weight: 600;
 }
 
-li{
-    margin-left:50px;
-    color: #626262;
-    font-size: 20px;
-    font-weight: 500;
-    cursor: pointer;
-}
-/* li hr{
-    border: none;
-    width: 80%;
-    height: 3px;
-    background-color:#FF4141 ;
-} */
-.BTN button{
-    width: 134px;
-    height: 43px;
-    outline: none;
-    border: 1px solid #7a7a7a;
-    border-radius: 75px;
+.nav-menu{
+  display: flex;
+align-items: center;
+list-style: none;
+gap: 50px;
+color: #626262;
 font-size: 20px;
-color: #515151;}
-li:hover hr{
-    border: none;
-    width: 80%;
-    height: 3px;
-    background-color:#FF4141 ;
-
-    
-}
-.BTN button:active{
-    background-color:#f3f3f3 ;
-
+font-weight: 500;
 }
 
-li hr::before{
-    width: 0px;
+.nav_menu li{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+
 }
-ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+
+.nav-menu hr {
+  border: none;
+  width: 80%;
+  height: 3px;
+  border-radius: 10px; 
+  background-color: #FF4141; 
+}
+
+.nav-login-cart {
+  display: flex;
+  align-items: center;
+  gap: 45px; 
+}
+
+.nav-login-cart button {
+  width: 157px;
+  height: 58px;
+  outline: none;
+  border: 1px solid #7a7a7a; 
+  border-radius: 75px;
+  color: #515151; 
+  font-size: 20px;
+  font-weight: 500; 
+  background: white; 
+  cursor: pointer;
+}
+
+/* .nav-login-cart {
+  background: #f3f3f3; 
+} */
+
+.nav-cart-count {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -35px;
+  margin-left: -55px;
+  border-radius: 11px; 
+  font-size: 14px;
+  background: red; 
+  color: white; 
+}
+.nav-dropdown{
+  display: none;
+}
+@media(max-width:1280px){
+  .navbar{
+    padding: 12px 50px;
+  }
+  .nav-logo img {
+    width: 40px;
+  }
+  .nav-logo p{
+    font-size: 25px;
+  }
+  .nav-menu{
+    gap: 30px;
+    font-size: 16px;
+  }
+  .nav-login-cart{
+    gap: 30px;
+  }
+  .nav-login-cart button {
+    width: 128px;
+    height: 45px;
+    font-size: 16px;
+
+  }
+  .nav-cart-count{
+    margin-left: -40px;
+     font-size: 12px;
+  }
+
+}
+
+@media(max-width:1024px){
+.navbar{
+  padding: 12px 30px;
+}
+.nav-menu{
+  gap: 25px;
+  font-size: 14px;
+}
+.nav-login-cart button{
+  width: 80px;
+  height: 35px;
+  font-size: 14px;
+}
+.nav-login-cart img{
+  width: 30px;
+}
+.nav-cart-count{
+  width: 18px;
+  height: 18px;
+}
+
+}
+
+@media(max-width:800px){
+
+  .navbar{
+    padding: 10px 0px;
+
+
+  } 
+
+  .nav-dropdown{
+    display: block;
+    width : 30px;
+     rotate : -90deg;
+      transition  :0.5s;
+  }
+  .nav-menu{
+    display: none;
+    height: 80px;
+    width: 100%;
+    position: absolute;
+    background-color: white;
+    justify-content: center;
+    top :50px;
+
+  }
+
+  .nav-menu-visible{
     display: flex;
-    justify-content: space-evenly;
+  }
+
+  .nav-dropdown.open{
+    transform: rotate(90deg);}
 }
 
-.cart_no{
-    display: flex;
-position: relative;
-left:-260px;
-top: -20px;
-background-color: #FF4141;
-width: 15px;
-justify-content: center;
-border-radius: 3px;
-color: white;
-
+@media(max-width:500px){
+  .navbar{
+    width: 8px 0px;
+    gap: 0;
+  }
+  .nav-logo{
+    transform: scale(0.8);
+  }
+  .nav-menu{
+    height: 70px;
+     top: 50px;
+  }
+  .nav-login-cart{
+    transform: scale(0.8);
+  }
 }
