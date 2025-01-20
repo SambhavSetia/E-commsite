@@ -4,7 +4,7 @@ import { ShopContext } from "../../Context/ShopContext";
 import remove_icon from "../Assets/cart_cross_icon.png";
 import all_product from "../Assets/all_product.js";
 const CartItems = () => {
-  const { allProduct, cartItems, addToCart, removeFromCart,getTotalCartAmount} =
+  const {  cartItems, addToCart, removeFromCart,getTotalCartAmount} =
     useContext(ShopContext);
 
   return (
