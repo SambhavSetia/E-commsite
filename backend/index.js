@@ -219,3 +219,31 @@ app.post('/login',async(req,res)=>{
     res.json({success:false,error:"Wrong email id"});
   }
 })
+
+
+//endpoint for new collection data
+app.get('/newcollections',async(req,res)=>{
+  let products=await Product.find({});
+  let newcollections=products.slice(1).slice(-8);
+  console.log("NewCollection Fetched");
+  res.send(newcollections)
+
+})
+
+
+//endpoint for popular in women 
+app.get('/popularinWomen',async(req,res)=>{
+  let products=await Product.find({category:"women"});
+
+let popular_in_women=products.slice(0,4);
+console.log("Popular in women fetched");
+res.send(popular_in_women);
+
+})
+
+
+//endpoint for adding product in cartDta
+
+app.post('/addtocart',async(req,res)=>{
+  console.log(req.body);
+})
