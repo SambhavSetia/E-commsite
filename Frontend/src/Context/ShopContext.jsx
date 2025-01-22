@@ -21,7 +21,8 @@ const ShopContextProvider = (props) => {
 
   // Fetching products from the server
   useEffect(() => {
-    let isMounted = true;  // flag to avoid state updates on unmounted component
+    let isMounted = true; // flag to avoid state updates on unmounted component
+  
     const fetchProducts = async () => {
       try {
         const response = await fetch('http://localhost:4000/allproducts');
@@ -35,11 +36,31 @@ const ShopContextProvider = (props) => {
         if (isMounted) setLoading(false);
       }
     };
+  
     fetchProducts();
+  
+    if (localStorage.getItem('auth-token')) {
+      fetch('http://localhost:4000/getcart', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'auth-token': `${localStorage.getItem('auth-token')}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}), // Send an empty JSON body
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (isMounted) setCartItems(data);
+        })
+        .catch((error) => console.error("Error fetching cart data:", error));
+    }
+  
     return () => {
       isMounted = false; // Cleanup on component unmount
     };
   }, []);
+  
 
   // Adding item to cart and sending request to server
   const addToCart = async (itemId) => {
@@ -66,8 +87,25 @@ const ShopContextProvider = (props) => {
   };
 
   // Removing item from cart
-  const removeFromCart = (itemId) => {
+  const removeFromCart = async(itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
+    if(localStorage.getItem('auth-token')){
+      try {
+        const response = await fetch('http://localhost:4000/removefromcart', {
+          method: "POST",
+          headers: {
+            Accept: 'application/json',
+            'auth-token': `${localStorage.getItem('auth-token')}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ itemId }),
+        });
+        const data = await response.json();
+        console.log(data); // Handle response
+      } catch (error) {
+        console.error("Error Removing from cart:", error);
+      }
+    }
   };
 
   // Calculate total cart amount
