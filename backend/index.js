@@ -6,12 +6,26 @@ import multer from 'multer'
 import path from 'path'
 import cors from 'cors'
 import dotenv from 'dotenv';
+
 dotenv.config();
 const PORT=process.env.PORT||4000;
 
 const app=express();
 app.use(express.json());
-app.use(cors());
+// app.use(cors());
+
+
+
+
+
+
+const corsOptions = {
+  origin: ['https://e-commerce-backend-yq08.onrender.com', 'https://e-commserce.onrender.com'],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+
 
 
 mongoose.connect("mongodb+srv://sambhavsetia29:ozrpzySTz87vmetM@cluster0.qman5.mongodb.net/e-commerce")
@@ -19,7 +33,9 @@ mongoose.connect("mongodb+srv://sambhavsetia29:ozrpzySTz87vmetM@cluster0.qman5.m
 
 app.listen(PORT,(error)=>{
   if(!error){
-    console.log(`Server Running on PORT http://localhost:${PORT}`);
+    console.log(`Server Running on PORT https://e-commerce-backend-yq08.onrender.com`);
+    
+
   }
   else{
     console.log("Error in listen is :",error);
@@ -31,6 +47,8 @@ app.listen(PORT,(error)=>{
 app.get("/",(req,res)=>{
   res.send("Express app is running")
 })
+
+
 
 //Image Storage Engine
 const storage= multer.diskStorage({
@@ -49,13 +67,16 @@ const upload = multer({
 
 
 
-app.use('/images',express.static('upload/images'))
-app.post("/upload",upload.single('product'),(req,res)=>{
-res.json({
-  success:1,
-  image_url:`http://localhost:${PORT}/images/${req.file.filename}`
-})
-})
+
+
+app.use('/images', express.static('upload/images'));
+app.post("/upload", upload.single('product'), (req, res) => {
+  res.json({
+    success: 1,
+    image_url:`https://e-commerce-backend-yq08.onrender.com/images/${req.file.filename}`
+  });
+});
+
 
 
 //Schema for creating products

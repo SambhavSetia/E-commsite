@@ -1,7 +1,3 @@
-
-
-
-
 import React, { createContext, useState, useEffect } from "react";
 
 export const ShopContext = createContext(null);
@@ -22,10 +18,12 @@ const ShopContextProvider = (props) => {
   // Fetching products from the server
   useEffect(() => {
     let isMounted = true; // flag to avoid state updates on unmounted component
-  
+
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:4000/allproducts');
+        const response = await fetch(
+          "https://e-commerce-backend-yq08.onrender.com/allproducts"
+        );
         const data = await response.json();
         if (isMounted) {
           setAll_product(data);
@@ -36,16 +34,16 @@ const ShopContextProvider = (props) => {
         if (isMounted) setLoading(false);
       }
     };
-  
+
     fetchProducts();
-  
-    if (localStorage.getItem('auth-token')) {
-      fetch('http://localhost:4000/getcart', {
-        method: 'POST',
+
+    if (localStorage.getItem("auth-token")) {
+      fetch("https://e-commerce-backend-yq08.onrender.com/getcart", {
+        method: "POST",
         headers: {
-          Accept: 'application/json',
-          'auth-token': `${localStorage.getItem('auth-token')}`,
-          'Content-Type': 'application/json',
+          Accept: "application/json",
+          "auth-token": `${localStorage.getItem("auth-token")}`,
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({}), // Send an empty JSON body
       })
@@ -55,29 +53,31 @@ const ShopContextProvider = (props) => {
         })
         .catch((error) => console.error("Error fetching cart data:", error));
     }
-  
+
     return () => {
       isMounted = false; // Cleanup on component unmount
     };
   }, []);
-  
 
   // Adding item to cart and sending request to server
   const addToCart = async (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
 
     // Check if user is logged in and has an auth token
-    if (localStorage.getItem('auth-token')) {
+    if (localStorage.getItem("auth-token")) {
       try {
-        const response = await fetch('http://localhost:4000/addtocart', {
-          method: "POST",
-          headers: {
-            Accept: 'application/json',
-            'auth-token': `${localStorage.getItem('auth-token')}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ itemId }),
-        });
+        const response = await fetch(
+          "https://e-commerce-backend-yq08.onrender.com/addtocart",
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "auth-token": `${localStorage.getItem("auth-token")}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ itemId }),
+          }
+        );
         const data = await response.json();
         console.log(data); // Handle response
       } catch (error) {
@@ -87,19 +87,22 @@ const ShopContextProvider = (props) => {
   };
 
   // Removing item from cart
-  const removeFromCart = async(itemId) => {
+  const removeFromCart = async (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
-    if(localStorage.getItem('auth-token')){
+    if (localStorage.getItem("auth-token")) {
       try {
-        const response = await fetch('http://localhost:4000/removefromcart', {
-          method: "POST",
-          headers: {
-            Accept: 'application/json',
-            'auth-token': `${localStorage.getItem('auth-token')}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ itemId }),
-        });
+        const response = await fetch(
+          "https://e-commerce-backend-yq08.onrender.com/removefromcart",
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "auth-token": `${localStorage.getItem("auth-token")}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ itemId }),
+          }
+        );
         const data = await response.json();
         console.log(data); // Handle response
       } catch (error) {
@@ -115,7 +118,9 @@ const ShopContextProvider = (props) => {
     let totalAmount = 0;
     for (const item in cartItems) {
       if (cartItems[item] > 0) {
-        let itemInfo = all_product.find((product) => product.id === Number(item));
+        let itemInfo = all_product.find(
+          (product) => product.id === Number(item)
+        );
         if (itemInfo) {
           totalAmount += itemInfo.new_price * cartItems[item];
         }
@@ -142,7 +147,7 @@ const ShopContextProvider = (props) => {
     removeFromCart,
     getTotalCartAmount,
     getTotalCartItems,
-    loading,  // provide loading state in the context
+    loading, // provide loading state in the context
   };
 
   return (
