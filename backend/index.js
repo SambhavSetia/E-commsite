@@ -20,7 +20,11 @@ app.use(express.json());
 
 
 const corsOptions = {
-  origin: ['https://e-commerce-backend-yq08.onrender.com', 'https://e-commserce.onrender.com'],
+  origin: [
+    'https://e-commsite-admin.onrender.com', // ✅ add this for local frontend development
+    'https://e-commerce-backend-yq08.onrender.com',
+    'https://e-commserce.onrender.com'
+  ],
   credentials: true,
 };
 
