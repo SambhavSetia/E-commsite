@@ -4,7 +4,7 @@ import { ShopContext } from "../../Context/ShopContext";
 import remove_icon from "../Assets/cart_cross_icon.png";
 
 const CartItems = () => {
-  const {  all_product,cartItems,  removeFromCart,getTotalCartAmount} =
+  const { all_product, cartItems, removeFromCart, getTotalCartAmount } =
     useContext(ShopContext);
 
   return (
@@ -20,10 +20,9 @@ const CartItems = () => {
       <hr />
       {all_product.map((e) => {
         if (cartItems[e.id] > 0) {
-         
           return (
-            <div>
-              <div className="cartitems-format          cartitems-format-main">
+            <div key={e.id}>
+              <div className="cartitems-format cartitems-format-main">
                 <img src={e.image} alt="" className="carticon-product-icon" />
                 <p>{e.name}</p>
                 <p>{e.new_price}</p>
@@ -31,37 +30,36 @@ const CartItems = () => {
                   {cartItems[e.id]}
                 </button>
                 <p>${e.new_price * cartItems[e.id]}</p>
-                <img className="cartitems-remove-icon"
+                <img
+                  className="cartitems-remove-icon"
                   src={remove_icon}
                   onClick={() => {
                     removeFromCart(e.id);
                   }}
                   alt=""
                 />
-                
-              </div><hr />
+              </div>
+              <hr />
             </div>
           );
         }
-return null;
-
-
-
+        return null;
       })}
+
       <div className="cartitems-down">
         <div className="cartitems-total">
-          <h1>cart Totals</h1>
+          <h1>Cart Totals</h1>
           <div>
             <div className="cartitems-total-item">
               <p>Subtotal</p>
               <p>${getTotalCartAmount()}</p>
             </div>
-            <hr/>
+            <hr />
             <div className="cartitems-total-item">
               <p>Shipping Fee</p>
               <p>Free</p>
             </div>
-            <hr/>
+            <hr />
             <div className="cartitems-total-item">
               <h3>Total</h3>
               <h3>${getTotalCartAmount()}</h3>
@@ -69,10 +67,11 @@ return null;
           </div>
           <button>Proceed To Checkout</button>
         </div>
+
         <div className="caritems-promocode">
-          <p>If you have a promo code ,Enter it here</p>
+          <p>If you have a promo code, enter it here</p>
           <div className="cartitems-promobox">
-            <input type="text" placeholder="promo code "></input>
+            <input type="text" placeholder="Promo code" />
             <button>Submit</button>
           </div>
         </div>

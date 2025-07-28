@@ -22,7 +22,7 @@ const ShopContextProvider = (props) => {
     const fetchProducts = async () => {
       try {
         const response = await fetch(
-          "https://e-commerce-backend-yq08.onrender.com/allproducts"
+          "http://localhost:4000/allproducts"
         );
         const data = await response.json();
         if (isMounted) {
@@ -38,7 +38,7 @@ const ShopContextProvider = (props) => {
     fetchProducts();
 
     if (localStorage.getItem("auth-token")) {
-      fetch("https://e-commerce-backend-yq08.onrender.com/getcart", {
+      fetch("http://localhost:4000/getcart", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -67,7 +67,7 @@ const ShopContextProvider = (props) => {
     if (localStorage.getItem("auth-token")) {
       try {
         const response = await fetch(
-          "https://e-commerce-backend-yq08.onrender.com/addtocart",
+          "http://localhost:4000/addtocart",
           {
             method: "POST",
             headers: {
@@ -92,7 +92,7 @@ const ShopContextProvider = (props) => {
     if (localStorage.getItem("auth-token")) {
       try {
         const response = await fetch(
-          "https://e-commerce-backend-yq08.onrender.com/removefromcart",
+          "http://localhost:4000/removefromcart",
           {
             method: "POST",
             headers: {
@@ -111,21 +111,24 @@ const ShopContextProvider = (props) => {
     }
   };
 
-  // Calculate total cart amount
+  // ✅ Updated: Calculate total cart amount
   const getTotalCartAmount = () => {
-    if (loading) return 0; // Return 0 if loading
+    if (loading || !Array.isArray(all_product)) return 0;
 
     let totalAmount = 0;
-    for (const item in cartItems) {
-      if (cartItems[item] > 0) {
-        let itemInfo = all_product.find(
-          (product) => product.id === Number(item)
+
+    for (const itemId in cartItems) {
+      const quantity = cartItems[itemId];
+      if (quantity > 0) {
+        const product = all_product.find(
+          (p) => String(p.id) === String(itemId)
         );
-        if (itemInfo) {
-          totalAmount += itemInfo.new_price * cartItems[item];
+        if (product?.new_price) {
+          totalAmount += product.new_price * quantity;
         }
       }
     }
+
     return totalAmount;
   };
 

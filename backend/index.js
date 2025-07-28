@@ -20,13 +20,12 @@ app.use(express.json());
 
 
 const corsOptions = {
-  origin: [
-    'https://e-commsite-admin.onrender.com', // ✅ add this for local frontend development
-    'https://e-commerce-backend-yq08.onrender.com',
-    'https://e-commserce.onrender.com'
-  ],
-  credentials: true,
+  origin: (origin, callback) => {
+    callback(null, true); // Allow all origins
+  },
+  credentials: true
 };
+
 
 app.use(cors(corsOptions));
 
@@ -37,7 +36,7 @@ mongoose.connect("mongodb+srv://sambhavsetia29:ozrpzySTz87vmetM@cluster0.qman5.m
 
 app.listen(PORT,(error)=>{
   if(!error){
-    console.log(`Server Running on PORT https://e-commerce-backend-yq08.onrender.com`);
+    console.log(`Server Running on PORT http://localhost:4000`);
     
 
   }
@@ -55,18 +54,9 @@ app.get("/",(req,res)=>{
 
 
 //Image Storage Engine
-const storage= multer.diskStorage({
-  destination:'./upload/images',
-  filename:(req,file,cb)=>{
-    return cb(null,`${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
+import { storage } from './utils/cloudinary.js'; // update path if needed
+const upload = multer({ storage });
 
-  }
-})
-
-
-const upload = multer({
-  storage: storage,
-})
 
 
 
@@ -76,9 +66,10 @@ const upload = multer({
 app.use('/images', express.static('upload/images'));
 app.post("/upload", upload.single('product'), (req, res) => {
   res.json({
-    success: 1,
-    image_url:`https://e-commerce-backend-yq08.onrender.com/images/${req.file.filename}`
-  });
+  success: 1,
+  image_url: req.file.path // Cloudinary hosted URL
+});
+
 });
 
 
@@ -300,14 +291,24 @@ app.post('/addtocart',fetchUser,async(req,res)=>{
 
 //create endpoint to remove the producuct from cartData
 
-app.post('/removefromcart',fetchUser,async(req,res)=>{
-  console.log("removed",req.body.itemId);
-  let userData=await Users.findOne({_id:req.user.id});
-  if(userData.cartData[req.body.itemId]>0){
-  userData.cartData[req.body.itemId]-=1;};
-  await Users.findOneAndUpdate({_id:req.user.id},{cartData:userData.cartData});
-  res.send("Removed")
-})
+app.post('/removefromcart', fetchUser, async (req, res) => {
+  console.log("removed", req.body.itemId);
+  
+  let userData = await Users.findOne({ _id: req.user.id });
+
+  if (userData.cartData[req.body.itemId] > 0) {
+    userData.cartData[req.body.itemId] -= 1;
+  }
+
+  await Users.findOneAndUpdate(
+    { _id: req.user.id },
+    { cartData: userData.cartData }
+  );
+
+  // Send a proper JSON response
+  res.json({ message: "Removed" });
+});
+
 
 
 //creating endpoint to get cart data
