@@ -141,17 +141,33 @@ res.json({
 })
 
 
-app.post('/removeproduct',async(req,res)=>{
+// app.post('/removeproduct',async(req,res)=>{
   
-  const deletedProduct = await Product.deleteOne({id:req.body.id});
+//   const deletedProduct = await Product.deleteOne({id:req.body.id});
   
-console.log("Removed")
-res.json({
-    success: true,
-    name:req.body.name
+// console.log("Removed")
+// res.json({
+//     success: true,
+//     name:req.body.name
     
-  });
-})
+//   });
+// })
+app.post('/removeproduct', async (req, res) => {
+  const { id } = req.body;
+
+  try {
+    const deletedProduct = await Product.findByIdAndDelete(id);
+    if (deletedProduct) {
+      console.log("Product deleted:", deletedProduct);
+      res.json({ success: true });
+    } else {
+      res.status(404).json({ success: false, message: "Product not found" });
+    }
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
 
 
 app.get('/allproducts',async(req,res)=>{
